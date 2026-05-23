@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import dj_database_url
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -146,10 +146,13 @@ ALLOWED_HOSTS = ['*']
 STATIC_URL = 'static/'
 
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default="postgresql://lifeos_3mvw_user:SOjyVhypeq3M1XzRHHjDad2vAjGQ6Nn6@dpg-d88h8eugvqtc73b3rup0-a.singapore-postgres.render.com/lifeos_3mvw",
-        conn_max_age=600
-        )
-}
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
+    }
+
+SUPERUSER_USERNAME = os.environ.get("DJANGO_SUPERUSER_USERNAME")
+SUPERUSER_PASSWORD = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
+SUPERUSER_EMAIL = os.environ.get("DJANGO_SUPERUSER_EMAIL", "")
