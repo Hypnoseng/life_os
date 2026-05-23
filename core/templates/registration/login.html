@@ -3,15 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | Life OS</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f7f2;
+            --panel: #ffffff;
+            --text: #1f2a24;
+            --muted: #6a746d;
+            --line: #dce3dd;
+            --primary: #2f6f4e;
+            --primary-dark: #24573d;
+            --danger: #b73535;
+            --danger-soft: #fff0f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .page {
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            padding: 32px 16px;
+        }
+
+        .login-card {
+            width: min(100%, 420px);
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: 0 18px 42px rgba(31, 42, 36, 0.08);
+            padding: 28px;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .subtitle {
+            margin: 12px 0 24px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .form-field {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            min-height: 44px;
+            padding: 0 14px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            color: var(--text);
+            background: #ffffff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(47, 111, 78, 0.14);
+        }
+
+        .error-box,
+        .field-error {
+            background: var(--danger-soft);
+            color: var(--danger);
+            border: 1px solid #f3c7c7;
+            border-radius: 6px;
+        }
+
+        .error-box {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .field-error {
+            margin: 8px 0 0;
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 44px;
+            margin-top: 4px;
+            padding: 0 16px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 22px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
+    <main class="page">
+        <section class="login-card">
+            <p class="eyebrow">Life OS</p>
+            <h1>Login</h1>
+            <p class="subtitle">Sign in to manage your tasks and keep your day organized.</p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+            {% if form.non_field_errors %}
+                <div class="error-box">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-field">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="field-error">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="field-error">{{ form.password.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <button class="button" type="submit">Login</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>
